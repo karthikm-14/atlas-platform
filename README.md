@@ -42,6 +42,7 @@ A scalable backend platform designed to support AI-powered SaaS products.
 
 ## 🧱 Architecture Overview
 
+```
 React Frontend (future)
 ↓
 FastAPI Backend (Atlas)
@@ -49,6 +50,7 @@ FastAPI Backend (Atlas)
 ├── PostgreSQL
 ├── Services
 └── Docs
+```
 
 
 ## ⚙️ Setup & Installation
