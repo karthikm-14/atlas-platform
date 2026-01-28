@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.api.v1 import health, ping, item
+from app.api.v1 import health, ping, item, users
 from app.db.session import engine
 from app.db.base import Base
 
@@ -10,6 +10,7 @@ app = FastAPI()
 app.include_router(health.router, prefix="/api/v1")
 app.include_router(ping.router, prefix="/api/v1")
 app.include_router(item.router, prefix="/api/v1")
+app.include_router(users.router, prefix="/api/v1")
 
 @app.get("/")
 def root():
