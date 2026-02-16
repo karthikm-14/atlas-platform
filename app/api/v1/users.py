@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.user import User
-from app.schemas.user import UserResponse, UserCreate
-from app.core.security import hash_password
+from app.schemas.user import UserResponse, UserCreate, UserLogin
+from app.core.security import hash_password, verify_password
 
 
 router = APIRouter()
@@ -28,3 +28,15 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 @router.get("/users", response_model=list[UserResponse])
 def list_users(db: Session = Depends(get_db)):
     return db.query(User).all()
+
+
+@router.post("/login", response_model=UserResponse)
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if not db_user:
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+
+    if not verify_password(user.password, db_user.password):
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+
+    return db_user
